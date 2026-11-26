@@ -52,14 +52,18 @@ export default function TopicsBrowser() {
   return (
     <div>
       {/* Filter Controls */}
-      <div className="bg-white rounded-lg border border-slate-200 p-4 sm:p-5 mb-8 space-y-4">
+      <div className="bg-white rounded-lg border border-slate-200 p-3.5 sm:p-5 mb-6 sm:mb-8 space-y-3.5 sm:space-y-4">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
           {/* Subject Pills */}
-          <div className="flex flex-wrap items-center gap-1.5" role="tablist" aria-label="Filter by subject">
+          <div
+            className="flex flex-wrap items-center gap-1.5"
+            role="tablist"
+            aria-label="Filter by subject"
+          >
             <button
               type="button"
               onClick={() => setSelectedSubject("all")}
-              className={`px-3.5 py-1.5 rounded-md text-sm font-medium transition-colors cursor-pointer ${
+              className={`px-3 sm:px-3.5 py-2 sm:py-1.5 rounded-md text-xs sm:text-sm font-medium transition-colors cursor-pointer ${
                 selectedSubject === "all"
                   ? "bg-[#1b365d] text-white"
                   : "bg-slate-100 text-slate-700 hover:bg-slate-200"
@@ -72,7 +76,7 @@ export default function TopicsBrowser() {
                 key={subject.id}
                 type="button"
                 onClick={() => setSelectedSubject(subject.id)}
-                className={`px-3.5 py-1.5 rounded-md text-sm font-medium transition-colors cursor-pointer ${
+                className={`px-3 sm:px-3.5 py-2 sm:py-1.5 rounded-md text-xs sm:text-sm font-medium transition-colors cursor-pointer ${
                   selectedSubject === subject.id
                     ? "bg-[#1b365d] text-white"
                     : "bg-slate-100 text-slate-700 hover:bg-slate-200"
@@ -84,13 +88,13 @@ export default function TopicsBrowser() {
           </div>
 
           {/* Class Filter */}
-          <div className="flex items-center gap-1.5 shrink-0">
+          <div className="grid grid-cols-3 sm:flex items-center gap-1.5 shrink-0">
             {(["all", "Class 11", "Class 12"] as ClassFilter[]).map((cls) => (
               <button
                 key={cls}
                 type="button"
                 onClick={() => setSelectedClass(cls)}
-                className={`px-3 py-1.5 rounded-md text-xs font-semibold border transition-colors cursor-pointer ${
+                className={`px-2.5 sm:px-3 py-2 sm:py-1.5 rounded-md text-xs font-semibold border text-center transition-colors cursor-pointer ${
                   selectedClass === cls
                     ? "border-[#1e6f5c] bg-[#eef7f4] text-[#1e6f5c]"
                     : "border-slate-200 bg-white text-slate-600 hover:border-slate-300"
@@ -102,25 +106,25 @@ export default function TopicsBrowser() {
           </div>
         </div>
 
-        {/* Search Input */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2 border-t border-slate-100">
+        {/* Search Input (16px on mobile prevents iOS Safari auto-zoom) */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-3 pt-2.5 border-t border-slate-100">
           <input
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search topics (e.g., Magnetic Nature, Gauss, Mitosis, Integration)..."
-            className="w-full sm:max-w-md px-3.5 py-2 text-sm rounded-md border border-slate-300 bg-white text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-[#1b365d]"
+            placeholder="Search topics (e.g., Magnetic Nature, Gauss, Mitosis)..."
+            className="w-full sm:max-w-md px-3.5 py-2.5 sm:py-2 text-base sm:text-sm rounded-md border border-slate-300 bg-white text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-[#1b365d]"
           />
           <p className="text-xs text-slate-500">
             Showing <strong className="text-slate-800">{filteredNotes.length}</strong>{" "}
-            {filteredNotes.length === 1 ? "topic" : "topics"} · Click any topic to open notes in a new page
+            {filteredNotes.length === 1 ? "topic" : "topics"} · Tap any topic to open notes
           </p>
         </div>
       </div>
 
       {/* Topic List Grouped by Subject */}
       {groupedBySubject.length === 0 ? (
-        <div className="bg-white rounded-lg border border-slate-200 p-10 text-center">
+        <div className="bg-white rounded-lg border border-slate-200 p-8 sm:p-10 text-center">
           <p className="text-slate-700 font-medium">No matching topics found.</p>
           <p className="text-sm text-slate-500 mt-1">
             Try clearing your search or switching the subject/class filter.
@@ -132,40 +136,38 @@ export default function TopicsBrowser() {
               setSelectedClass("all");
               setQuery("");
             }}
-            className="mt-4 px-4 py-2 text-xs font-semibold rounded-md bg-[#1b365d] text-white hover:bg-[#142847] cursor-pointer"
+            className="mt-4 px-4 py-2.5 text-xs font-semibold rounded-md bg-[#1b365d] text-white hover:bg-[#142847] cursor-pointer"
           >
             Reset Filters
           </button>
         </div>
       ) : (
-        <div className="space-y-10">
+        <div className="space-y-8 sm:space-y-10">
           {groupedBySubject.map(({ subject, notes }) => (
             <section key={subject.id} aria-labelledby={`subject-${subject.id}`}>
-              <div className="flex items-baseline justify-between border-b-2 border-[#1b365d] pb-2 mb-4">
-                <div>
-                  <h2
-                    id={`subject-${subject.id}`}
-                    className="font-study-serif text-xl font-bold text-[#1b365d]"
-                  >
-                    {subject.name}
-                  </h2>
-                </div>
+              <div className="flex items-baseline justify-between border-b-2 border-[#1b365d] pb-2 mb-3.5 sm:mb-4">
+                <h2
+                  id={`subject-${subject.id}`}
+                  className="font-study-serif text-lg sm:text-xl font-bold text-[#1b365d]"
+                >
+                  {subject.name}
+                </h2>
                 <span className="text-xs font-medium text-slate-500">
                   {notes.length} {notes.length === 1 ? "topic" : "topics"}
                 </span>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4">
                 {notes.map((note: TopicNote) => (
                   <a
                     key={note.slug}
                     href={`/notes/${note.subject}/${note.slug}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group bg-white rounded-lg border border-slate-200 p-5 hover:border-[#1b365d] hover:shadow-sm transition-all flex flex-col justify-between"
+                    className="group bg-white rounded-lg border border-slate-200 p-4 sm:p-5 hover:border-[#1b365d] hover:shadow-sm active:bg-slate-50 transition-all flex flex-col justify-between"
                   >
                     <div>
-                      <div className="flex flex-wrap items-center gap-2 mb-2.5">
+                      <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-2.5">
                         <span className="inline-block text-[11px] font-semibold px-2 py-0.5 rounded bg-slate-100 text-slate-700">
                           {note.classLevel}
                         </span>
@@ -173,13 +175,13 @@ export default function TopicsBrowser() {
                           {note.eyebrow.replace(" STUDY GUIDE", "")}
                         </span>
                         {note.pdfPath && (
-                          <span className="ml-auto inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded bg-[#eef7f4] text-[#1e6f5c] border border-[#cde6dd]">
+                          <span className="sm:ml-auto inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded bg-[#eef7f4] text-[#1e6f5c] border border-[#cde6dd]">
                             PDF Included
                           </span>
                         )}
                       </div>
 
-                      <h3 className="font-study-serif text-base font-bold text-[#1b365d] group-hover:text-[#1e6f5c] transition-colors leading-snug">
+                      <h3 className="font-study-serif text-[15px] sm:text-base font-bold text-[#1b365d] group-hover:text-[#1e6f5c] transition-colors leading-snug">
                         {note.title}
                       </h3>
                       <p className="text-sm text-slate-600 mt-2 leading-relaxed">
